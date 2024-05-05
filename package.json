@@ -1,0 +1,14 @@
+{
+  "name": "ndiyakholwa-mnqanqeni-282-node-sql-assignment-javascript",
+  "version": "1.0.0",
+  "description": "This project is a project for a backend server of a database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.11.5"
+  }
+}
