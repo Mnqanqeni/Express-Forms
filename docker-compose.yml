@@ -1,18 +1,52 @@
 version: "3.3"
 services:
-  postgres:
-    image: postgres:15.3
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=shop
-    volumes:
-      - ./gitignore/postgresql:/var/lib/postgresql/data
-      - ./src:/docker-entrypoint-initdb.d
+  server:
+    image: server:1.0.0
+    container_name: server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports:
-      - 5432:5432
+      - "5432:5432"
+    volumes:
+      - ./server:/server
+      - server-node-modules:/server/node_modules
+    depends_on:
+      - database
+    networks:
+      - app-network
+
+  database:
+    image: database:1.0.0
+    container_name: database
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -p 5432 -U postgres -d database"]
+      start_period: 0s
+      interval: 5s
+      retries: 5
+    networks:
+      - app-network
+
   adminer:
     image: adminer
+    container_name: adminer
     restart: always
     ports:
-      - 8080:8080
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  server-node-modules:
+  database-v:
