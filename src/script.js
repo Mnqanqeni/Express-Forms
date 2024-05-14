@@ -2,7 +2,7 @@ const { Pool } = require("pg");
 const pool = new Pool({
   user: "user",
   host: "localhost",
-  database: "db",
+  database: "shop",
   password: "pass",
   port: 5432
 });
@@ -107,21 +107,7 @@ const viewLastVisitor = async () => {
   }
 };
 
-const helloWorld = () => {
-  pool.query(
-    "SELECT $1::text as message",
-    ["Hello world!"],
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-
-      console.log(results.rows);
-    }
-  );
-};
-
-helloWorld();
+addNewVisitor("Mbali",22, "mydate","18:30","Ndiya","it was nice")
 
 module.exports = {
   addNewVisitor,
