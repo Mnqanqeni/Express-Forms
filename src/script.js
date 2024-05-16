@@ -7,6 +7,26 @@ const pool = new Pool({
   port: 5432
 });
 
+const createVisitorsTable = async () => {
+  try {
+    const query = `
+      CREATE TABLE IF NOT EXISTS Visitors (
+        id SERIAL PRIMARY KEY,
+        visitor_name VARCHAR(100) NOT NULL,
+        visitor_age INTEGER NOT NULL,
+        date_of_visit DATE NOT NULL,
+        time_of_visit TIME NOT NULL,
+        assistant_name VARCHAR(100) NOT NULL,
+        comments TEXT
+      );
+    `;
+    await pool.query(query);
+  } catch (error) {
+    console.error("Error creating Visitors table:", error.message);
+    throw error;
+  }
+};
+
 const addNewVisitor = async (visitor) => {
   try {
     const { visitor_name, visitor_age, date_of_visit, time_of_visit, assistant_name, comments } = visitor;
@@ -107,6 +127,7 @@ const viewLastVisitor = async () => {
   }
 };
 
+createVisitorsTable();
 addNewVisitor("Mbali",22, "mydate","18:30","Ndiya","it was nice")
 
 module.exports = {
