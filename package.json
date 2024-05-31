@@ -4,12 +4,16 @@
   "description": "This project is a project for a backend server of a database",
   "main": "./src/scripts.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jasmine",
     "start": "nodemon ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "pg": "^8.11.5"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "jasmine": "^5.1.0"
   }
 }

@@ -5,7 +5,7 @@ services:
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=shop
+      - POSTGRES_DB=umuzi_db
     volumes:
       - ./gitignore/postgresql:/var/lib/postgresql/data
       - ./src:/docker-entrypoint-initdb.d
