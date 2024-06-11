@@ -1,46 +1,54 @@
 const moment = require("moment");
 
-const validateName = (name) => {
-    if(!(typeof name === 'string' && name.trim().length > 0)){
-        throw new Error("Invalid name");
+function validateName(name) {
+    if (!(typeof name === 'string' )) {
+        throw new Error(`Input must be a string. Received: ${name}`);
     }
-};
+    
+    if(name.split(" ")[0].length < 2 || name.split(" ")[1].length < 2) {
+        throw new Error("invalid name, provide a full name");
+    }
 
-const validateAge = (age) => {
-    if(!(Number.isInteger(age) && age > 0)){
+    if (!/^\s*[A-Za-z]+\s+[A-Za-z]+\s*$/.test(name.trim())) {
+        throw new Error("invalid name, provide a full name");
+    }
+    
+}
+
+function validateAge(age) {
+    if (!(Number.isInteger(age) && age > 0)) {
         throw new Error("Invalid age");
     }
-};
+}
 
-const validateDate = (date) => {
-    if(!(moment(date, 'YYYY-MM-DD', true).isValid())){
+function validateDate(date) {
+    if (!(moment(date, 'YYYY-MM-DD', true).isValid())) {
         throw new Error("Invalid date");
     }
-};
+}
 
-const validateTime = (time) => {
-    if(!(moment(time, 'HH:mm', true).isValid())){
+function validateTime(time) {
+    if (!(moment(time, 'HH:mm', true).isValid())) {
         throw new Error("Invalid time");
     }
-};
+}
 
-const validateAssistant = (assistant) => {
-    if(!(typeof assistant === 'string' && assistant.trim().length > 0)){
+function validateAssistant(assistant) {
+    if (!(typeof assistant === 'string' && assistant.trim().length > 0)) {
         throw new Error("Invalid assistant name");
     }
-};
+}
 
-const validateId = (id) => {
+function validateId(id) {
     if (!(typeof id === 'number' && Number.isInteger(id) && id > 0)) {
         throw new Error("Invalid id");
     }
-};
-const validateComments = (comments) => {
-     if(!(typeof comments === 'string' && comments.trim().length > 1)){
-         throw new Error("Invalid comments");
-     }
-};
+}
 
-console.log(validateTime("12:00"));
+function validateComments(comments) {
+    if (!(typeof comments === 'string' && comments.trim().length > 1)) {
+        throw new Error("Invalid comments");
+    }
+}
 
-module.exports = {validateName, validateAge, validateDate, validateTime, validateAssistant, validateComments,validateId}
+module.exports = {validateName, validateAge, validateDate, validateTime, validateAssistant, validateComments, validateId};

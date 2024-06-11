@@ -1,11 +1,11 @@
 const { pool } = require("./config");
 const { validateName, validateAge, validateDate, validateTime, validateAssistant, validateComments, validateId } = require("./script_helper");
 
-const {queries} = require("./script_object");
-
+const {queries} = require("./query_script");
+const { errorMessages, status } = require("./script_objects");
 const createVisitorsTable = async () => {
     await pool.query(queries.createVisitorsTable);
-    return "table created";
+    return status.tableCreated;
 };
 
 const addNewVisitor = async (visitor) => {
