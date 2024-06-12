@@ -1,12 +1,13 @@
 const moment = require("moment");
+const { errorMessages } = require("./script_objects");
 
 function validateName(name) {
     if (!(typeof name === 'string' )) {
-        throw new Error(`Input must be a string. Received: ${name}`);
+        throw new Error(errorMessages.inputErrorMessages.string(name));
     }
     
     if(name.split(" ")[0].length < 2 || name.split(" ")[1].length < 2) {
-        throw new Error("invalid name, provide a full name");
+        throw new Error("invalid name, at least 2 letters in first and last name");
     }
 
     if (!/^\s*[A-Za-z]+\s+[A-Za-z]+\s*$/.test(name.trim())) {
@@ -17,13 +18,17 @@ function validateName(name) {
 
 function validateAge(age) {
     if (!(Number.isInteger(age) && age > 0)) {
-        throw new Error("Invalid age");
+        throw new Error(errorMessages.formatErrorMessages.ageFormatError);
     }
 }
 
 function validateDate(date) {
+    if(!(typeof date === 'string')) {
+        throw new Error(errorMessages.inputErrorMessages.string(date));
+    }
+
     if (!(moment(date, 'YYYY-MM-DD', true).isValid())) {
-        throw new Error("Invalid date");
+        throw new Error(errorMessages.formatErrorMessages.dateOfVisitFormatError);
     }
 }
 

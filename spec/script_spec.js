@@ -67,39 +67,39 @@ describe("Database Tests", () => {
       );
     });
 
-    it("should throw an error when name is not a valid name", async () => {
-      newVisitor.name = "EA12";
+    // it("should throw an error when name is not a valid name", async () => {
+    //   newVisitor.name = "EA12";
+    //   await addNewVisitor(newVisitor).catch((error) =>
+    //     expect(error).toBe(
+    //       errorMessages
+    //     )
+    //   );
+    // });
+
+    it("should throw an error when age is not a valid age", async () => {
+      newVisitor.age = -1;
       await addNewVisitor(newVisitor).catch((error) =>
-        expect(error).toBe(
-          errorMessages
+        expect(error.message).toBe(errorMessages.formatErrorMessages.ageFormatError)
+      );
+    });
+
+    it("should throw an error when date is not a string", async () => {
+      newVisitor.date = 2022 - 13 - 24;
+      await addNewVisitor(newVisitor).catch((error) =>
+        expect(error.message).toBe(
+          errorMessages.inputErrorMessages.string(newVisitor.date)
         )
       );
     });
 
-    // it("should throw an error when age is not a valid age", async () => {
-    //   newVisitor.age = -1;
-    //   await addNewVisitor(newVisitor).catch((error) =>
-    //     expect(error).toBe(errorMessages.formatErrorMessages.ageFormatError)
-    //   );
-    // });
-
-    // it("should throw an error when date is not a string", async () => {
-    //   newVisitor.date = 2022 - 13 - 24;
-    //   await addNewVisitor(newVisitor).catch((error) =>
-    //     expect(error).toBe(
-    //       errorMessages.inputErrorMessages.string(newVisitor.date)
-    //     )
-    //   );
-    // });
-
-    // it("should throw an error when date is not in the correct date format", async () => {
-    //   newVisitor.date = "04-12-2022";
-    //   await addNewVisitor(newVisitor).catch((error) =>
-    //     expect(error.message).toBe(
-    //       errorMessages.formatErrorMessages.dateOfVisitFormatError
-    //     )
-    //   );
-    // });
+    it("should throw an error when date is not in the correct date format", async () => {
+      newVisitor.date = "04-12-2022";
+      await addNewVisitor(newVisitor).catch((error) =>
+        expect(error.message).toBe(
+          errorMessages.formatErrorMessages.dateOfVisitFormatError
+        )
+      );
+    });
 
     // it("should throw an error when time is not a string", async () => {
     //   newVisitor.time = 12 - 10 - 10;

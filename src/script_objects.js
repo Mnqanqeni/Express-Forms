@@ -18,6 +18,11 @@ const errorMessages = {
         },
 
     },
+    formatErrorMessages: {
+        ageFormatError: "Age must be a positive integer",
+        timeOfVisitFormatError: "Time of visit must be in the format hh:mm",
+        dateOfVisitFormatError: "Date of visit must be in the format yyyy-mm-dd",
+    }
     
 }
 
