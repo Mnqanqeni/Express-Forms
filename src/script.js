@@ -70,7 +70,7 @@ const viewLastVisitor = async () => {
     const result = await pool.query(queries.viewLastVisitor);
     return result.rows[0];
 };
-
+//creating a table
 createVisitorsTable().then((data) => console.log(data));
 
 module.exports = {
