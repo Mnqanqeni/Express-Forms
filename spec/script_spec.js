@@ -19,7 +19,7 @@ describe("Database Tests", () => {
     newVisitor = {
       name: "Bend Over",
       age: 25,
-      date: "2024/05/13",
+      date: "2024-05-13",
       time: "09:00",
       assistant: "Jane Smith",
       comments: "Interested in programming and designing courses",
@@ -34,6 +34,18 @@ describe("Database Tests", () => {
     ];
   });
 
+  afterEach(() => {
+    newVisitor = {
+      name: "Bend Over",
+      age: 25,
+      date: "2024-05-13",
+      time: "09:00",
+      assistant: "Jane Smith",
+      comments: "Interested in programming and designing courses",
+    };
+  });
+  
+  
   describe("createTable", () => {
     it("should create visitors table", async () => {
       await createVisitorsTable();
@@ -101,32 +113,32 @@ describe("Database Tests", () => {
       );
     });
 
-    // it("should throw an error when time is not a string", async () => {
-    //   newVisitor.time = 12 - 10 - 10;
-    //   await addNewVisitor(newVisitor).catch((error) =>
-    //     expect(error).toBe(
-    //       errorMessages.inputErrorMessages.string(newVisitor.time)
-    //     )
-    //   );
-    // });
+    it("should throw an error when time is not a string", async () => {
+      newVisitor.time = 7;
+      await addNewVisitor(newVisitor).catch((error) =>
+        expect(error.message).toBe(
+          errorMessages.inputErrorMessages.string(newVisitor.time)
+        )
+      );
+    });
 
-    // it("should throw an error when time is not in the correct time format", async () => {
-    //   newVisitor.time = "10:1";
-    //   await addNewVisitor(newVisitor).catch((error) =>
-    //     expect(error).toBe(
-    //       errorMessages.formatErrorMessages.timeOfVisitFormatError
-    //     )
-    //   );
-    // });
+    it("should throw an error when time is not in the correct time format", async () => {
+      newVisitor.time = "10:1";
+      await addNewVisitor(newVisitor).catch((error) =>
+        expect(error.message).toBe(
+          errorMessages.formatErrorMessages.timeOfVisitFormatError
+        )
+      );
+    });
 
-    // it("should throw an error when assistant is not a string", async () => {
-    //   newVisitor.assistant = 123;
-    //   await addNewVisitor(newVisitor).catch((error) =>
-    //     expect(error).toBe(
-    //       errorMessages.inputErrorMessages.string(newVisitor.assistant)
-    //     )
-    //   );
-    // });
+    it("should throw an error when assistant is not a string", async () => {
+      newVisitor.assistant = 123;
+      await addNewVisitor(newVisitor).catch((error) =>
+        expect(error.message).toBe(
+          errorMessages.inputErrorMessages.string(newVisitor.assistant)
+        )
+      );
+    });
 
     // it("should throw an error when assistant is not a valid name", async () => {
     //   newVisitor.assistant = "EA12";
@@ -137,60 +149,60 @@ describe("Database Tests", () => {
     //   );
     // });
 
-    // it("should throw an error when comments is not a string", async () => {
-    //   newVisitor.comments = 123;
-    //   await addNewVisitor(newVisitor).catch((error) =>
-    //     expect(error).toBe(
-    //       errorMessages.inputErrorMessages.string(newVisitor.comments)
-    //     )
-    //   );
-    // });
+    it("should throw an error when comments is not a string", async () => {
+      newVisitor.comments = 123;
+      await addNewVisitor(newVisitor).catch((error) =>
+        expect(error.message).toBe(
+          errorMessages.inputErrorMessages.string(newVisitor.comments)
+        )
+      );
+    });
 
-    // it("should add a new visitor", async () => {
-    //   await addNewVisitor(newVisitor);
-    //   expect(pool.query).toHaveBeenCalledWith(queries.addNewVisitorQuery, args);
-    // });
+    it("should add a new visitor", async () => {
+      await addNewVisitor(newVisitor);
+      expect(pool.query).toHaveBeenCalledWith(queries.addNewVisitor, args);
+    });
 
-    // it("should return a success when visitor is added", async () => {
-    //   const result = await addNewVisitor(newVisitor);
-    //   expect(result).toBe(status.visitorAdded);
-    // });
+    it("should return a success when visitor is added", async () => {
+      const result = await addNewVisitor(newVisitor);
+      expect(result).toBe(status.visitorAdded);
+    });
   });
 
-  // describe("deleteVisitor", () => {
-  //   it("should delete a visitor and return success", async () => {
-  //     pool.query.and.returnValue({ rowCount: 1 });
-  //     const response = await deleteVisitor(1);
+  describe("deleteVisitor", () => {
+    it("should delete a visitor and return success", async () => {
+      pool.query.and.returnValue({ rowCount: 1 });
+      const response = await deleteVisitor(1);
 
-  //     expect(response).toBe(status.visitorDeleted);
-  //     expect(pool.query).toHaveBeenCalledOnceWith(queries.deleteVisitorQuery, [
-  //       1,
-  //     ]);
-  //   });
-  //   it("should return an error message if the visitor is not found", async () => {
-  //     pool.query.and.returnValue({ rowCount: 0 });
-  //     await deleteVisitor(1).catch((error) =>
-  //       expect(error.message).toBe(status.visitorNotFound)
-  //     );
-  //     expect(pool.query).toHaveBeenCalledOnceWith(queries.deleteVisitorQuery, [
-  //       1,
-  //     ]);
-  //   });
-  // });
+      expect(response).toBe(status.visitorDeleted);
+      expect(pool.query).toHaveBeenCalledOnceWith(queries.deleteVisitor, [
+        1,
+      ]);
+    });
+    it("should return an error message if the visitor is not found", async () => {
+      pool.query.and.returnValue({ rowCount: 0 });
+      await deleteVisitor(1).catch((error) =>
+        expect(error.message).toBe(status.visitorNotFound)
+      );
+      expect(pool.query).toHaveBeenCalledOnceWith(queries.deleteVisitor, [
+        1,
+      ]);
+    });
+  });
 
-  // describe("viewVisitor", () => {
-  //   it("should view a visitor", async () => {
-  //     pool.query.and.returnValue(obj);
-  //     await viewVisitor(1);
-  //     expect(pool.query).toHaveBeenCalledWith(queries.viewVisitorQuery, [1]);
-  //   });
+  describe("viewVisitor", () => {
+    it("should view a visitor", async () => {
+      pool.query.and.returnValue({ rows: newVisitor});
+      await viewOneVisitor(1);
+      // expect(pool.query).toHaveBeenCalledWith(queries.viewOneVisitor, [1]);
+    });
 
-  //   it("should return a visitor", async () => {
-  //     pool.query.and.returnValue({ rows: [mockedVisitor] });
-  //     const result = await viewVisitor(1);
-  //     expect(result).toEqual(mockedVisitor);
-  //   });
-  // });
+    // it("should return a visitor", async () => {
+    //   pool.query.and.returnValue({ rows: [mockedVisitor] });
+    //   const result = await viewOneVisitor(1);
+    //   expect(result).toEqual(mockedVisitor);
+    // });
+  });
 
   // describe("viewLastVisitor", () => {
   //   it("should view the last visitor", async () => {

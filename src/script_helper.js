@@ -33,12 +33,19 @@ function validateDate(date) {
 }
 
 function validateTime(time) {
+    if (!(typeof time === 'string' )) {
+        throw new Error(errorMessages.inputErrorMessages.string(time));
+    }
     if (!(moment(time, 'HH:mm', true).isValid())) {
-        throw new Error("Invalid time");
+        throw new Error(errorMessages.formatErrorMessages.timeOfVisitFormatError);
     }
 }
 
 function validateAssistant(assistant) {
+    if (!(typeof assistant === 'string' )) {
+        throw new Error(errorMessages.inputErrorMessages.string(assistant));
+    }
+
     if (!(typeof assistant === 'string' && assistant.trim().length > 0)) {
         throw new Error("Invalid assistant name");
     }
@@ -51,6 +58,10 @@ function validateId(id) {
 }
 
 function validateComments(comments) {
+    if (!(typeof comments === 'string' )) {
+        throw new Error(errorMessages.inputErrorMessages.string(comments));
+    }
+
     if (!(typeof comments === 'string' && comments.trim().length > 1)) {
         throw new Error("Invalid comments");
     }

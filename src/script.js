@@ -71,7 +71,7 @@ const viewLastVisitor = async () => {
     return result.rows[0];
 };
 
-deleteAllVisitors().then((data) => console.log(data));
+createVisitorsTable().then((data) => console.log(data));
 
 module.exports = {
     createVisitorsTable,

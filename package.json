@@ -5,7 +5,7 @@
   "main": "./src/scripts.js",
   "scripts": {
     "test": "jasmine",
-    "start": "nodemon ."
+    "start": "node ./src/script.js"
   },
   "author": "",
   "license": "ISC",

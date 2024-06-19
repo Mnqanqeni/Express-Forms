@@ -10,7 +10,7 @@ services:
       - ./gitignore/postgresql:/var/lib/postgresql/data
       - ./src:/docker-entrypoint-initdb.d
     ports:
-      - 5432:5432
+      - 5434:5432
   adminer:
     image: adminer
     restart: always
