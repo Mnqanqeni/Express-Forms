@@ -20,7 +20,7 @@ const addNewVisitor = async (visitor) => {
     
     const values = [name, age, date, time, assistant, comments];
     const result = await pool.query(queries.addNewVisitor, values);
-    return result.rows[0].id;
+    return "visitor added";
 };
 
 const listAllVisitors = async () => {
@@ -70,8 +70,10 @@ const viewLastVisitor = async () => {
     const result = await pool.query(queries.viewLastVisitor);
     return result.rows[0];
 };
-//creating a table
-createVisitorsTable().then((data) => console.log(data));
+
+
+viewOneVisitor(1).then(console.log);
+
 
 module.exports = {
     createVisitorsTable,

@@ -34,16 +34,7 @@ describe("Database Tests", () => {
     ];
   });
 
-  afterEach(() => {
-    newVisitor = {
-      name: "Bend Over",
-      age: 25,
-      date: "2024-05-13",
-      time: "09:00",
-      assistant: "Jane Smith",
-      comments: "Interested in programming and designing courses",
-    };
-  });
+
   
   
   describe("createTable", () => {
@@ -179,6 +170,7 @@ describe("Database Tests", () => {
         1,
       ]);
     });
+     
     it("should return an error message if the visitor is not found", async () => {
       pool.query.and.returnValue({ rowCount: 0 });
       await deleteVisitor(1).catch((error) =>
@@ -192,61 +184,63 @@ describe("Database Tests", () => {
 
   describe("viewVisitor", () => {
     it("should view a visitor", async () => {
-      pool.query.and.returnValue({ rows: newVisitor});
+      newVisitor.date = new Date("2021-12-31");
+      pool.query.and.returnValue({ rows: [newVisitor]});
       await viewOneVisitor(1);
-      // expect(pool.query).toHaveBeenCalledWith(queries.viewOneVisitor, [1]);
+      expect(pool.query).toHaveBeenCalledWith(queries.viewOneVisitor, [1]);
     });
 
-    // it("should return a visitor", async () => {
-    //   pool.query.and.returnValue({ rows: [mockedVisitor] });
-    //   const result = await viewOneVisitor(1);
-    //   expect(result).toEqual(mockedVisitor);
-    // });
+    it("should return a visitor", async () => {
+      newVisitor.date = new Date("2021-12-31");
+      pool.query.and.returnValue({ rows: [newVisitor] });
+      const result = await viewOneVisitor(1);
+      expect(result).toEqual(newVisitor);
+    });
   });
 
-  // describe("viewLastVisitor", () => {
-  //   it("should view the last visitor", async () => {
-  //     pool.query.and.returnValue(obj);
-  //     await viewLastVisitor();
-  //     expect(pool.query).toHaveBeenCalledWith(queries.viewLastVisitorQuery);
-  //   });
+  describe("viewLastVisitor", () => {
+    it("should view the last visitor", async () => {
+      pool.query.and.returnValue({ rows: [mockedVisitor] });
+      await viewLastVisitor();
+      expect(pool.query).toHaveBeenCalledWith(queries.viewLastVisitor);
+    });
 
-  //   it("should return the last visitor", async () => {
-  //     pool.query.and.returnValue({ rows: [mockedVisitor] });
-  //     const result = await viewLastVisitor();
-  //     expect(result).toEqual(mockedVisitor);
-  //   });
-  //   it("should update a visitor and return success", async () => {
-  //     pool.query.and.returnValue(obj);
-  //     const column = "id";
-  //     const result = await updateVisitor(1, column, "John Doe");
-  //     expect(pool.query).toHaveBeenCalledWith(
-  //       queries.updateVisitorQuery.replace("column", column),
-  //       ["John Doe", 1]
-  //     );
-  //     expect(result).toBe(status.visitorUpdated);
-  //   });
-  // });
+    it("should return the last visitor", async () => {
+      pool.query.and.returnValue({ rows: [mockedVisitor] });
+      const result = await viewLastVisitor();
+      expect(result).toEqual(mockedVisitor);
+    });
+    it("should update a visitor and return success", async () => {
+      pool.query.and.returnValue({ rowCount: 1 });
+      const column = "name";
+      const result = await updateVisitor(1, column, "Teddy Bear");
+      expect(pool.query).toHaveBeenCalledWith(
+        queries.updateVisitor.replace("column", column),
+        ["Teddy Bear", 1]
+      );
+      expect(result).toBe(status.visitorUpdated);
+    });
+  });
 
-  // describe("deleteAllVisitors", () => {
-  //   it("should delete all visitors", async () => {
-  //     pool.query.and.returnValue({ rowCount: 1 });
-  //     await deleteAllVisitors();
-  //     expect(pool.query).toHaveBeenCalledWith(queries.deleteAllVisitorsQuery);
-  //   });
+  describe("deleteAllVisitors", () => {
+    it("should delete all visitors", async () => {
+      pool.query.and.returnValue({ rowCount: 1 });
+      // await deleteAllVisitors();
+      // expect(pool.query).toHaveBeenCalledWith(queries.deleteAllVisitorsQuery);
+    });
 
-  //   it("should return a success message when all visitors are deleted", async () => {
-  //     pool.query.and.returnValue({ rowCount: 1 });
-  //     const result = await deleteAllVisitors();
-  //     expect(result).toBe(status.allVisitorsDeleted);
-  //   });
+    // it("should return a success message when all visitors are deleted", async () => {
+    //   pool.query.and.returnValue({ rowCount: 1 });
+    //   const result = await deleteAllVisitors();
+    //   expect(result).toBe(status.allVisitorsDeleted);
+    // });
 
-  //   it("should throw an error when no visitors are found to delete", async () => {
-  //     pool.query.and.returnValue(Promise.resolve({ rowCount: 0 }));
+    // it("should throw an error when no visitors are found to delete", async () => {
+    //   pool.query.and.returnValue(Promise.resolve({ rowCount: 0 }));
 
-  //     await expectAsync(deleteAllVisitors()).toBeRejectedWithError(
-  //       status.noVisitorsFound
-  //     );
-  //   });
-  // });
+    //   await expectAsync(deleteAllVisitors()).toBeRejectedWithError(
+    //     status.noVisitorsFound
+    //   );
+    // });
+  });
 });

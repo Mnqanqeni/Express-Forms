@@ -6,14 +6,14 @@ function validateName(name) {
         throw new Error(errorMessages.inputErrorMessages.string(name));
     }
     
+    if (!/^\s*[A-Za-z]+\s+[A-Za-z]+\s*$/.test(name.trim())) {
+        throw new Error("invalid name, provide a full name");
+    }
+
     if(name.split(" ")[0].length < 2 || name.split(" ")[1].length < 2) {
         throw new Error("invalid name, at least 2 letters in first and last name");
     }
 
-    if (!/^\s*[A-Za-z]+\s+[A-Za-z]+\s*$/.test(name.trim())) {
-        throw new Error("invalid name, provide a full name");
-    }
-    
 }
 
 function validateAge(age) {
