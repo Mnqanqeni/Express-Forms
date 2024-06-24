@@ -215,7 +215,7 @@ describe("Database Tests", () => {
       const column = "name";
       const result = await updateVisitor(1, column, "Teddy Bear");
       expect(pool.query).toHaveBeenCalledWith(
-        queries.updateVisitor.replace("column", column),
+        queries.updateVisitor.replace("$1", column),
         ["Teddy Bear", 1]
       );
       expect(result).toBe(status.visitorUpdated);
@@ -225,22 +225,22 @@ describe("Database Tests", () => {
   describe("deleteAllVisitors", () => {
     it("should delete all visitors", async () => {
       pool.query.and.returnValue({ rowCount: 1 });
-      // await deleteAllVisitors();
-      // expect(pool.query).toHaveBeenCalledWith(queries.deleteAllVisitorsQuery);
+      await deleteAllVisitors();
+      expect(pool.query).toHaveBeenCalledWith(queries.deleteAllVisitors);
     });
 
-    // it("should return a success message when all visitors are deleted", async () => {
-    //   pool.query.and.returnValue({ rowCount: 1 });
-    //   const result = await deleteAllVisitors();
-    //   expect(result).toBe(status.allVisitorsDeleted);
-    // });
+    it("should return a success message when all visitors are deleted", async () => {
+      pool.query.and.returnValue({ rowCount: 1 });
+      const result = await deleteAllVisitors();
+      expect(result).toBe(status.allVisitorsDeleted);
+    });
 
-    // it("should throw an error when no visitors are found to delete", async () => {
-    //   pool.query.and.returnValue(Promise.resolve({ rowCount: 0 }));
+    it("should return no visitors found when no visitors are found", async () => {
+      pool.query.and.returnValue(Promise.resolve({ rowCount: 0 }));
+      const result = await deleteAllVisitors();
+      expect(result).toBe(status.noVisitorsFound);
+    });
 
-    //   await expectAsync(deleteAllVisitors()).toBeRejectedWithError(
-    //     status.noVisitorsFound
-    //   );
-    // });
+     
   });
 });

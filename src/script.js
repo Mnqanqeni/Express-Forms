@@ -20,7 +20,7 @@ const addNewVisitor = async (visitor) => {
     
     const values = [name, age, date, time, assistant, comments];
     const result = await pool.query(queries.addNewVisitor, values);
-    return "visitor added";
+    return status.visitorAdded;
 };
 
 const listAllVisitors = async () => {
@@ -32,7 +32,7 @@ const deleteVisitor = async (visitorId) => {
     validateId(visitorId);
 
     const result = await pool.query(queries.deleteVisitor, [visitorId]);
-    return "visitor deleted";
+    return status.visitorDeleted;
 };
 
 const updateVisitor = async (visitorId, columnKey, newValue) => {
@@ -50,7 +50,7 @@ const updateVisitor = async (visitorId, columnKey, newValue) => {
     const query = queries.updateVisitor.replace('$1', columnKey);
     const values = [newValue, visitorId];
     const result = await pool.query(query, values);
-    return "visitor updated";
+    return status.visitorUpdated;
 };
 
 const viewOneVisitor = async (visitorId) => {
@@ -63,17 +63,13 @@ const viewOneVisitor = async (visitorId) => {
 
 const deleteAllVisitors = async () => {
     const result = await pool.query(queries.deleteAllVisitors);
-    return "all visitors deleted";
+    return result.rowCount===0 ? status.noVisitorsFound : status.allVisitorsDeleted;
 };
 
 const viewLastVisitor = async () => {
     const result = await pool.query(queries.viewLastVisitor);
     return result.rows[0];
 };
-
-
-viewOneVisitor(1).then(console.log);
-
 
 module.exports = {
     createVisitorsTable,
