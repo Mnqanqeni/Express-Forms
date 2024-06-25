@@ -70,14 +70,14 @@ describe("Database Tests", () => {
       );
     });
 
-    // it("should throw an error when name is not a valid name", async () => {
-    //   newVisitor.name = "EA12";
-    //   await addNewVisitor(newVisitor).catch((error) =>
-    //     expect(error).toBe(
-    //       errorMessages
-    //     )
-    //   );
-    // });
+    it("should throw an error when name is not valid", async () => {
+      newVisitor.name = "A B";
+      await addNewVisitor(newVisitor).catch((error) =>
+        expect(error.message).toBe(
+          errorMessages.invalidName
+        )
+      );
+    });
 
     it("should throw an error when age is not a valid age", async () => {
       newVisitor.age = -1;
@@ -130,15 +130,6 @@ describe("Database Tests", () => {
         )
       );
     });
-
-    // it("should throw an error when assistant is not a valid name", async () => {
-    //   newVisitor.assistant = "EA12";
-    //   await addNewVisitor(newVisitor).catch((error) =>
-    //     expect(error).toBe(
-    //       errorMessages.formatErrorMessages.fullNameFormatError
-    //     )
-    //   );
-    // });
 
     it("should throw an error when comments is not a string", async () => {
       newVisitor.comments = 123;
@@ -210,6 +201,7 @@ describe("Database Tests", () => {
       const result = await viewLastVisitor();
       expect(result).toEqual(mockedVisitor);
     });
+
     it("should update a visitor and return success", async () => {
       pool.query.and.returnValue({ rowCount: 1 });
       const column = "name";
@@ -241,6 +233,5 @@ describe("Database Tests", () => {
       expect(result).toBe(status.noVisitorsFound);
     });
 
-     
   });
 });

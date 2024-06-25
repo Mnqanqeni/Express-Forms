@@ -2,7 +2,7 @@ const { pool } = require("./config");
 const { validateName, validateAge, validateDate, validateTime, validateAssistant, validateComments, validateId } = require("./script_helper");
 
 const {queries} = require("./query_script");
-const { errorMessages, status } = require("./script_objects");
+const { status } = require("./script_objects");
 const createVisitorsTable = async () => {
     await pool.query(queries.createVisitorsTable);
     return status.tableCreated;
@@ -19,10 +19,14 @@ const addNewVisitor = async (visitor) => {
     validateComments(comments);
     
     const values = [name, age, date, time, assistant, comments];
-    const result = await pool.query(queries.addNewVisitor, values);
-    return status.visitorAdded;
+    await pool.query(queries.addNewVisitor, values);
+    return status.visitorAdded(name);
 };
 
+const viewAllVisitors = async () => {
+    const result = await pool.query(queries.viewAllVisitors);
+    return result.rows;
+}
 const listAllVisitors = async () => {
     const result = await pool.query(queries.listAllVisitors);
     return result.rows;
@@ -31,8 +35,8 @@ const listAllVisitors = async () => {
 const deleteVisitor = async (visitorId) => {
     validateId(visitorId);
 
-    const result = await pool.query(queries.deleteVisitor, [visitorId]);
-    return status.visitorDeleted;
+    await pool.query(queries.deleteVisitor, [visitorId]);
+    return status.visitorDeleted(visitorId);
 };
 
 const updateVisitor = async (visitorId, columnKey, newValue) => {
@@ -47,10 +51,9 @@ const updateVisitor = async (visitorId, columnKey, newValue) => {
         case "comments": validateComments(newValue); break;
         default: throw new Error("Invalid column key");
     }
-    const query = queries.updateVisitor.replace('$1', columnKey);
-    const values = [newValue, visitorId];
-    const result = await pool.query(query, values);
-    return status.visitorUpdated;
+    const query = queries.generateUpdateQuery(columnKey);
+    const result = await pool.query(query,[newValue, visitorId]);
+    return result.rowCount===0 ? status.visitorNotFound(visitorId) : status.visitorUpdated(newValue);
 };
 
 const viewOneVisitor = async (visitorId) => {
@@ -71,6 +74,11 @@ const viewLastVisitor = async () => {
     return result.rows[0];
 };
 
+console.log("*****************************************************************");
+updateVisitor(7, "name","Jane lane").then(result => console.log(result));
+console.log("*****************************************************************");
+console.log("View all visitors: ");
+viewAllVisitors().then(result => console.log(result));
 module.exports = {
     createVisitorsTable,
     addNewVisitor,

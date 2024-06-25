@@ -15,6 +15,9 @@ const queries = {
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING id;
     `,
+    viewAllVisitors: `
+        SELECT * FROM Visitors;
+    `,
     listAllVisitors: `
         SELECT id, name FROM Visitors;
     `,
@@ -22,9 +25,10 @@ const queries = {
         DELETE FROM Visitors
         WHERE id = $1;
     `,
-    updateVisitor: `
+    generateUpdateQuery: (columnKey) => `
         UPDATE Visitors
-        SET $1 = $2 WHERE id = $3;
+        SET ${columnKey} = $1
+        WHERE id = $2;
     `,
     viewOneVisitor: `
         SELECT * FROM Visitors

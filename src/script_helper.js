@@ -2,16 +2,17 @@ const moment = require("moment");
 const { errorMessages } = require("./script_objects");
 
 function validateName(name) {
+    const isNameFullRegex = /^\s*[A-Za-z]+\s+[A-Za-z]+\s*$/;
     if (!(typeof name === 'string' )) {
         throw new Error(errorMessages.inputErrorMessages.string(name));
     }
     
-    if (!/^\s*[A-Za-z]+\s+[A-Za-z]+\s*$/.test(name.trim())) {
-        throw new Error("invalid name, provide a full name");
+    if (!isNameFullRegex.test(name.trim())) {
+        throw new Error(errorMessages.invalidName);
     }
 
     if(name.split(" ")[0].length < 2 || name.split(" ")[1].length < 2) {
-        throw new Error("invalid name, at least 2 letters in first and last name");
+        throw new Error(errorMessages.invalidName);
     }
 
 }
@@ -42,13 +43,7 @@ function validateTime(time) {
 }
 
 function validateAssistant(assistant) {
-    if (!(typeof assistant === 'string' )) {
-        throw new Error(errorMessages.inputErrorMessages.string(assistant));
-    }
-
-    if (!(typeof assistant === 'string' && assistant.trim().length > 0)) {
-        throw new Error("Invalid assistant name");
-    }
+    validateName(assistant);
 }
 
 function validateId(id) {
