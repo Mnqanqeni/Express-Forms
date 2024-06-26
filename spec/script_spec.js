@@ -1,4 +1,4 @@
-const {  
+const {
   createVisitorsTable,
   addNewVisitor,
   listAllVisitors,
@@ -6,13 +6,14 @@ const {
   updateVisitor,
   viewOneVisitor,
   deleteAllVisitors,
-  viewLastVisitor} = require("../src/script.js");
+  viewLastVisitor,
+} = require("../src/script.js");
 const { pool } = require("../src/config.js");
-const  mockedVisitor = [{ id: 1, name: 'John Doe', age: 30, date: '2024-06-08', time: '12:00', assistant: 'Assistant', comments: 'No comments' }];
+const mockedVisitor = [{ id: 1, name: 'John Doe', age: 30, date: '2024-06-08', time: '12:00', assistant: 'Assistant', comments: 'No comments' }];
 const { queries } = require("../src/query_script.js");
 const { errorMessages, status } = require("../src/script_objects.js");
 
-describe("Database Tests", () => {
+describe("Database Functionality", () => {
   let newVisitor;
   beforeEach(() => {
     spyOn(pool, "query");
@@ -34,34 +35,21 @@ describe("Database Tests", () => {
     ];
   });
 
-
-  
-  
-  describe("createTable", () => {
-    it("should create visitors table", async () => {
+  describe("Create Visitors Table", () => {
+    it("should create the visitors table", async () => {
       await createVisitorsTable();
       expect(pool.query).toHaveBeenCalledOnceWith(queries.createVisitorsTable);
     });
 
-    it("should return a success when the table is created", async () => {
+    it("should return success message when the table is created", async () => {
       pool.query.and.returnValue({ rows: [] });
       const result = await createVisitorsTable();
       expect(result).toBe(status.tableCreated);
     });
   });
 
-  describe("listAllVisitors", () => {
-    it("should list all visitors", async () => {
-      const mockVisitors = [newVisitor];
-      pool.query.and.returnValue({ rows: mockVisitors });
-      const result = await listAllVisitors();
-      expect(result).toEqual(mockVisitors);
-      expect(pool.query).toHaveBeenCalledWith(queries.listAllVisitors);
-    });
-  });
-
-  describe("addNewVisitor", () => {
-    it("should throw an error when name is  not a string", async () => {
+  describe("Add New Visitor", () => {
+    it("should throw an error when name is not a string", async () => {
       newVisitor.name = 123;
       await addNewVisitor(newVisitor).catch((error) =>
         expect(error.message).toBe(
@@ -70,16 +58,16 @@ describe("Database Tests", () => {
       );
     });
 
-    it("should throw an error when name is not valid", async () => {
+    it("should throw an error when visitor name is less than two letters", async () => {
       newVisitor.name = "A B";
       await addNewVisitor(newVisitor).catch((error) =>
         expect(error.message).toBe(
-          errorMessages.invalidName
+          errorMessages.invalidName.nameAtLeastTwoLetters("visitor", newVisitor.name)
         )
       );
     });
 
-    it("should throw an error when age is not a valid age", async () => {
+    it("should throw an error when age is not valid", async () => {
       newVisitor.age = -1;
       await addNewVisitor(newVisitor).catch((error) =>
         expect(error.message).toBe(errorMessages.formatErrorMessages.ageFormatError)
@@ -95,7 +83,7 @@ describe("Database Tests", () => {
       );
     });
 
-    it("should throw an error when date is not in the correct date format", async () => {
+    it("should throw an error when date is not in the correct format", async () => {
       newVisitor.date = "04-12-2022";
       await addNewVisitor(newVisitor).catch((error) =>
         expect(error.message).toBe(
@@ -113,7 +101,7 @@ describe("Database Tests", () => {
       );
     });
 
-    it("should throw an error when time is not in the correct time format", async () => {
+    it("should throw an error when time is not in the correct format", async () => {
       newVisitor.time = "10:1";
       await addNewVisitor(newVisitor).catch((error) =>
         expect(error.message).toBe(
@@ -127,6 +115,15 @@ describe("Database Tests", () => {
       await addNewVisitor(newVisitor).catch((error) =>
         expect(error.message).toBe(
           errorMessages.inputErrorMessages.string(newVisitor.assistant)
+        )
+      );
+    });
+
+    it("should throw an error when assistant name is less than two letters", async () => {
+      newVisitor.assistant = "A B";
+      await addNewVisitor(newVisitor).catch((error) =>
+        expect(error.message).toBe(
+          errorMessages.invalidName.nameAtLeastTwoLetters("assistant", newVisitor.assistant)
         )
       );
     });
@@ -145,93 +142,101 @@ describe("Database Tests", () => {
       expect(pool.query).toHaveBeenCalledWith(queries.addNewVisitor, args);
     });
 
-    it("should return a success when visitor is added", async () => {
+    it("should return success message when visitor is added", async () => {
       const result = await addNewVisitor(newVisitor);
-      expect(result).toBe(status.visitorAdded);
+      expect(result).toBe(status.visitorAdded(newVisitor.name));
     });
   });
 
-  describe("deleteVisitor", () => {
-    it("should delete a visitor and return success", async () => {
+  describe("List All Visitors", () => {
+    it("should list all visitors", async () => {
+      const mockVisitors = [newVisitor];
+      pool.query.and.returnValue({ rows: mockVisitors });
+      const result = await listAllVisitors();
+      expect(result).toEqual(mockVisitors);
+      expect(pool.query).toHaveBeenCalledWith(queries.listAllVisitors);
+    });
+  });
+
+  describe("Delete Visitor", () => {
+    it("should delete a visitor and return success message", async () => {
       pool.query.and.returnValue({ rowCount: 1 });
       const response = await deleteVisitor(1);
-
-      expect(response).toBe(status.visitorDeleted);
-      expect(pool.query).toHaveBeenCalledOnceWith(queries.deleteVisitor, [
-        1,
-      ]);
+      expect(response).toBe(status.visitorDeleted(1));
+      expect(pool.query).toHaveBeenCalledOnceWith(queries.deleteVisitor, [1]);
     });
-     
-    it("should return an error message if the visitor is not found", async () => {
+
+    it("should return visitor not found message when visitor is not found", async () => {
       pool.query.and.returnValue({ rowCount: 0 });
       await deleteVisitor(1).catch((error) =>
-        expect(error.message).toBe(status.visitorNotFound)
+        expect(error.message).toBe(status.visitorNotFound(1))
       );
-      expect(pool.query).toHaveBeenCalledOnceWith(queries.deleteVisitor, [
-        1,
-      ]);
+      expect(pool.query).toHaveBeenCalledOnceWith(queries.deleteVisitor, [1]);
     });
   });
 
-  describe("viewVisitor", () => {
-    it("should view a visitor", async () => {
-      newVisitor.date = new Date("2021-12-31");
-      pool.query.and.returnValue({ rows: [newVisitor]});
-      await viewOneVisitor(1);
-      expect(pool.query).toHaveBeenCalledWith(queries.viewOneVisitor, [1]);
+  describe("Update Visitor", () => {
+    it("should update a visitor and return success message", async () => {
+      pool.query.and.returnValue({ rowCount: 1 });
+      const column = "name";
+      const result = await updateVisitor(1, column, "Teddy Bear");
+      const query = queries.generateUpdateQuery(column);
+      expect(pool.query).toHaveBeenCalledWith(query, ["Teddy Bear", 1]);
+      expect(result).toBe(status.visitorUpdated("Teddy Bear"));
     });
 
-    it("should return a visitor", async () => {
+    it("should return visitor not found message when visitor is not found", async () => {
+      pool.query.and.returnValue({ rowCount: 0 });
+      const column = "name";
+      const result = await updateVisitor(1, column, "Donald Duck");
+      const query = queries.generateUpdateQuery(column);
+      expect(pool.query).toHaveBeenCalledWith(query, ["Donald Duck", 1]);
+      expect(result).toBe(status.visitorNotFound("Donald Duck"));
+    });
+  });
+
+  describe("View One Visitor", () => {
+    it("should return a specific visitor", async () => {
       newVisitor.date = new Date("2021-12-31");
       pool.query.and.returnValue({ rows: [newVisitor] });
       const result = await viewOneVisitor(1);
       expect(result).toEqual(newVisitor);
+      expect(pool.query).toHaveBeenCalledWith(queries.viewOneVisitor, [1]);
+    });
+
+    it("should return visitor not found message when visitor is not found", async () => {
+      pool.query.and.returnValue({ rows: [] });
+      const result = await viewOneVisitor(1);
+      expect(result).toEqual(status.visitorNotFound(1));
     });
   });
 
-  describe("viewLastVisitor", () => {
-    it("should view the last visitor", async () => {
-      pool.query.and.returnValue({ rows: [mockedVisitor] });
-      await viewLastVisitor();
-      expect(pool.query).toHaveBeenCalledWith(queries.viewLastVisitor);
-    });
-
+  describe("View Last Visitor", () => {
     it("should return the last visitor", async () => {
       pool.query.and.returnValue({ rows: [mockedVisitor] });
       const result = await viewLastVisitor();
       expect(result).toEqual(mockedVisitor);
-    });
-
-    it("should update a visitor and return success", async () => {
-      pool.query.and.returnValue({ rowCount: 1 });
-      const column = "name";
-      const result = await updateVisitor(1, column, "Teddy Bear");
-      expect(pool.query).toHaveBeenCalledWith(
-        queries.updateVisitor.replace("$1", column),
-        ["Teddy Bear", 1]
-      );
-      expect(result).toBe(status.visitorUpdated);
+      expect(pool.query).toHaveBeenCalledWith(queries.viewLastVisitor);
     });
   });
 
-  describe("deleteAllVisitors", () => {
+  describe("Delete All Visitors", () => {
     it("should delete all visitors", async () => {
       pool.query.and.returnValue({ rowCount: 1 });
       await deleteAllVisitors();
       expect(pool.query).toHaveBeenCalledWith(queries.deleteAllVisitors);
     });
 
-    it("should return a success message when all visitors are deleted", async () => {
+    it("should return success message when all visitors are deleted", async () => {
       pool.query.and.returnValue({ rowCount: 1 });
       const result = await deleteAllVisitors();
       expect(result).toBe(status.allVisitorsDeleted);
     });
 
-    it("should return no visitors found when no visitors are found", async () => {
-      pool.query.and.returnValue(Promise.resolve({ rowCount: 0 }));
+    it("should return no visitors found message when no visitors are found", async () => {
+      pool.query.and.returnValue({ rowCount: 0 });
       const result = await deleteAllVisitors();
       expect(result).toBe(status.noVisitorsFound);
     });
-
   });
 });

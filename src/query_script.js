@@ -1,3 +1,5 @@
+const { listAllVisitors } = require("./script");
+
 const queries = {
     createVisitorsTable: `
         CREATE TABLE IF NOT EXISTS Visitors (
@@ -14,9 +16,6 @@ const queries = {
         INSERT INTO Visitors (name, age, date, time, assistant, comments)
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING id;
-    `,
-    viewAllVisitors: `
-        SELECT * FROM Visitors;
     `,
     listAllVisitors: `
         SELECT id, name FROM Visitors;
@@ -43,6 +42,5 @@ const queries = {
         LIMIT 1;
     `
 };
-
 
 module.exports = { queries };

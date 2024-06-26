@@ -23,7 +23,10 @@ const errorMessages = {
         timeOfVisitFormatError: "Time of visit must be in the format hh:mm",
         dateOfVisitFormatError: "Date of visit must be in the format yyyy-mm-dd",
     },
-    invalidName:"invalid name, at least 2 letters in first and last name",
+    invalidName:{
+        nameAtLeastTwoLetters:(duty,name) => `invalid ${duty} name, at least 2 letters in first and last name. Received: ${name}`,
+        namesMustBeFull:(duty,name) => `invalid ${duty} name, names must be full. Received: ${name}`,
+    }
     
 }
 
