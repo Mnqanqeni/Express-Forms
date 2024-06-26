@@ -9,7 +9,17 @@ const {
   viewLastVisitor,
 } = require("../src/script.js");
 const { pool } = require("../src/config.js");
-const mockedVisitor = [{ id: 1, name: 'John Doe', age: 30, date: '2024-06-08', time: '12:00', assistant: 'Assistant', comments: 'No comments' }];
+const mockedVisitor = [
+  {
+    id: 1,
+    name: "John Doe",
+    age: 30,
+    date: "2024-06-08",
+    time: "12:00",
+    assistant: "Assistant",
+    comments: "No comments",
+  },
+];
 const { queries } = require("../src/query_script.js");
 const { errorMessages, status } = require("../src/script_objects.js");
 
@@ -62,7 +72,10 @@ describe("Database Functionality", () => {
       newVisitor.name = "A B";
       await addNewVisitor(newVisitor).catch((error) =>
         expect(error.message).toBe(
-          errorMessages.invalidName.nameAtLeastTwoLetters("visitor", newVisitor.name)
+          errorMessages.invalidName.nameAtLeastTwoLetters(
+            "visitor",
+            newVisitor.name
+          )
         )
       );
     });
@@ -70,7 +83,9 @@ describe("Database Functionality", () => {
     it("should throw an error when age is not valid", async () => {
       newVisitor.age = -1;
       await addNewVisitor(newVisitor).catch((error) =>
-        expect(error.message).toBe(errorMessages.formatErrorMessages.ageFormatError)
+        expect(error.message).toBe(
+          errorMessages.formatErrorMessages.ageFormatError
+        )
       );
     });
 
@@ -123,7 +138,10 @@ describe("Database Functionality", () => {
       newVisitor.assistant = "A B";
       await addNewVisitor(newVisitor).catch((error) =>
         expect(error.message).toBe(
-          errorMessages.invalidName.nameAtLeastTwoLetters("assistant", newVisitor.assistant)
+          errorMessages.invalidName.nameAtLeastTwoLetters(
+            "assistant",
+            newVisitor.assistant
+          )
         )
       );
     });
@@ -133,6 +151,15 @@ describe("Database Functionality", () => {
       await addNewVisitor(newVisitor).catch((error) =>
         expect(error.message).toBe(
           errorMessages.inputErrorMessages.string(newVisitor.comments)
+        )
+      );
+    });
+
+    it("should throw an error when comments is less than two letters", async () => {
+      newVisitor.comments = "A";
+      await addNewVisitor(newVisitor).catch((error) =>
+        expect(error.message).toBe(
+          errorMessages.comment.commentAtLeastTwoCharacters(newVisitor.comments)
         )
       );
     });
@@ -192,6 +219,14 @@ describe("Database Functionality", () => {
       const query = queries.generateUpdateQuery(column);
       expect(pool.query).toHaveBeenCalledWith(query, ["Donald Duck", 1]);
       expect(result).toBe(status.visitorNotFound("Donald Duck"));
+    });
+
+    it("should return ", async () => {
+      pool.query.and.returnValue({ rowCount: 0 });
+      const column = "name";
+      await updateVisitor(-1, column, "Donald Duck").catch((error) => {
+        expect(error.message).toBe(errorMessages.id.idMustBePositive(-1));
+      });
     });
   });
 

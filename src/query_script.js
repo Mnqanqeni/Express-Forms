@@ -1,7 +1,7 @@
 const { listAllVisitors } = require("./script");
 
 const queries = {
-    createVisitorsTable: `
+  createVisitorsTable: `
         CREATE TABLE IF NOT EXISTS Visitors (
             id SERIAL PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
@@ -12,35 +12,35 @@ const queries = {
             comments TEXT
         );
     `,
-    addNewVisitor: `
+  addNewVisitor: `
         INSERT INTO Visitors (name, age, date, time, assistant, comments)
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING id;
     `,
-    listAllVisitors: `
+  listAllVisitors: `
         SELECT id, name FROM Visitors;
     `,
-    deleteVisitor: `
+  deleteVisitor: `
         DELETE FROM Visitors
         WHERE id = $1;
     `,
-    generateUpdateQuery: (columnKey) => `
+  generateUpdateQuery: (columnKey) => `
         UPDATE Visitors
         SET ${columnKey} = $1
         WHERE id = $2;
     `,
-    viewOneVisitor: `
+  viewOneVisitor: `
         SELECT * FROM Visitors
         WHERE id = $1;
     `,
-    deleteAllVisitors: `
+  deleteAllVisitors: `
         DELETE FROM Visitors;
     `,
-    viewLastVisitor: `
+  viewLastVisitor: `
         SELECT id FROM Visitors
         ORDER BY id DESC
         LIMIT 1;
-    `
+    `,
 };
 
 module.exports = { queries };
