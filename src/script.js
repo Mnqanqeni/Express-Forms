@@ -72,8 +72,8 @@ const updateVisitor = async (visitorId, columnKey, newValue) => {
   const query = queries.generateUpdateQuery(columnKey);
   const result = await pool.query(query, [newValue, visitorId]);
   return result.rowCount === 0
-    ? status.visitorNotFound(newValue)
-    : status.visitorUpdated(newValue);
+    ? status.visitorNotFound(visitorId)
+    : status.visitorUpdated(columnKey);
 };
 
 const viewOneVisitor = async (visitorId) => {

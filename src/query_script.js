@@ -1,5 +1,3 @@
-const { listAllVisitors } = require("./script");
-
 const queries = {
   createVisitorsTable: `
         CREATE TABLE IF NOT EXISTS Visitors (
