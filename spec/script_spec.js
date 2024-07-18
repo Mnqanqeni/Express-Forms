@@ -209,7 +209,7 @@ describe("Database Functionality", () => {
       const result = await updateVisitor(1, column, "Teddy Bear");
       const query = queries.generateUpdateQuery(column);
       expect(pool.query).toHaveBeenCalledWith(query, ["Teddy Bear", 1]);
-      expect(result).toBe(status.visitorUpdated("Teddy Bear"));
+      expect(result).toBe(status.visitorUpdated(column));
     });
 
     it("should return visitor not found message when visitor is not found", async () => {
@@ -218,7 +218,7 @@ describe("Database Functionality", () => {
       const result = await updateVisitor(1, column, "Donald Duck");
       const query = queries.generateUpdateQuery(column);
       expect(pool.query).toHaveBeenCalledWith(query, ["Donald Duck", 1]);
-      expect(result).toBe(status.visitorNotFound("Donald Duck"));
+      expect(result).toBe(status.visitorNotFound(1));
     });
 
     it("should return ", async () => {
