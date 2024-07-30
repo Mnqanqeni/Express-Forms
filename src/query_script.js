@@ -2,11 +2,11 @@ const queries = {
   createVisitorsTable: `
         CREATE TABLE IF NOT EXISTS Visitors (
             id SERIAL PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
+            name TEXT NOT NULL,
             age INT NOT NULL,
             date DATE NOT NULL,
             time TIME NOT NULL,
-            assistant VARCHAR(100) NOT NULL,
+            assistant TEXT NOT NULL,
             comments TEXT
         );
     `,

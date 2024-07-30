@@ -10,33 +10,20 @@ const status = {
 };
 
 const errorMessages = {
-  inputErrorMessages: {
-    string: (input) => {
-      return `Input must be a string. Received: ${input}`;
-    },
-    number: (input) => {
-      return `Input must be a number. Received: ${input}`;
-    },
-  },
-  formatErrorMessages: {
-    ageFormatError: "Age must be a positive integer",
-    timeOfVisitFormatError: "Time of visit must be in the format hh:mm",
-    dateOfVisitFormatError: "Date of visit must be in the format yyyy-mm-dd",
-  },
-  invalidName: {
-    nameAtLeastTwoLetters: (duty, name) =>
-      `invalid ${duty} name, at least 2 letters in first and last name. Received: ${name}`,
-    namesMustBeFull: (duty, name) =>
-      `invalid ${duty} name, names must be full. Received: ${name}`,
-  },
-  id: {
-    idMustBePositive: (id) =>
-      `invalid id, it must be a positive integer or zero. Received: ${id}`,
-  },
-  comment: {
-    commentAtLeastTwoCharacters: (comment) =>
-      `invalid comments, it must be at least two characters long. Received: ${comment}`,
-  },
+  inputMustBeString: (input) => `Input must be a string. Received: ${input}`,
+  ageMustBePositiveInteger: "Age must be a positive integer",
+  timeOfVisitFormat: "Time of visit must be in the format hh:mm",
+  dateOfVisitFormat: "Date of visit must be in the format yyyy-mm-dd",
+  nameAtLeastTwoLetters: (duty, name) =>
+    `invalid ${duty} name, at least 2 letters in first and last name. Received: ${name}`,
+  namesMustBeFull: (duty, name) =>
+    `invalid ${duty} name, names must be full. Received: ${name}`,
+
+  idMustBePositive: (id) =>
+    `invalid id, it must be a positive integer or zero. Received: ${id}`,
+
+  commentAtLeastTwoCharacters: (comment) =>
+    `invalid comments, it must be at least two characters long. Received: ${comment}`,
 };
 
 module.exports = {
