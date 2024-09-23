@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/styles.css" />
+    <title>Visitor Form</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Visitor Registration Form</h1>
+        <form action="/new_visitor" method="POST">
+            <div class="user-input-box">
+                <label for="visitor_name">Visitor Name:</label>
+                <input type="text" placeholder="Enter your name" id="visitor_name" name="visitor_name" required>
+            </div>
+            <div class="user-input-box">
+                <label for="assistant_name">Assistant Name:</label>
+                <input type="text" placeholder="Assistant name" id="your_name" name="your_name" required>
+            </div>
+            <div class="user-input-box">
+                <label for="visitor_age">Visitor's Age:</label>
+                <input type="number" placeholder="Enter your age" id="visitor_age" name="visitor_age" required>
+            </div>
+            <div class="user-input-box">
+                <label for="visit_date">Date of Visit:</label>
+                <input type="date" id="visit_date" name="visit_date" required>
+            </div>
+
+
+            <div class="user-input-box">
+                <label for="visit_time">Time of Visit:</label>
+                <input type="time" id="visit_time" name="visit_time" required>
+            </div>
+            <div class="user-input-box">
+                <label for="comments">Comments:</label>
+                <textarea placeholder="Type your comments here...." id="comments" name="comments"></textarea>
+            </div>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+
+</html>
