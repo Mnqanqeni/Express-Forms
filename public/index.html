@@ -1,62 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/styles.css" />
     <title>Visitor Form</title>
     <script>
-        function validateForm(event) {
-            const commentsField = document.getElementById("comments");
-            const commentsValue = commentsField.value;
-            const letterCount = (commentsValue.match(/[A-Za-z]/g) || []).length;
-
-            if (letterCount < 2) {
-                alert("Please enter at least two letters in the comments.");
-                event.preventDefault();
-            }
-        }
+      const validateForm = require("../src/script_helper");
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <h1>Visitor Registration Form</h1>
-        <form action="/submit" method="GET" onsubmit="validateForm(event)">
-            <div class="user-input-box">
-                <label for="name">Visitor Name:</label>
-                <input type="text" placeholder="Enter your name (First and Last)" id="name" name="name" required
-                    pattern="^[A-Za-z]{2,}\s[A-Za-z]{2,}$"
-                    title="Please enter first and last name, each with at least two letters." />
-            </div>
-            <div class="user-input-box">
-                <label for="assistant">Assistant Name:</label>
-                <input type="text" placeholder="Assistant name (First and Last)" id="assistant" name="assistant"
-                    required pattern="^[A-Za-z]{2,}\s[A-Za-z]{2,}$"
-                    title="Please enter first and last name, each with at least two letters." />
-            </div>
-            <div class="user-input-box">
-                <label for="age">Visitor's Age:</label>
-                <input type="number" placeholder="Enter your age" id="age" name="age" required min="1" step="1"
-                    title="Please enter a positive integer." />
-            </div>
-            <div class="user-input-box">
-                <label for="date">Date of Visit:</label>
-                <input type="date" id="date" name="date" required />
-            </div>
-            <div class="user-input-box">
-                <label for="time">Time of Visit:</label>
-                <input type="time" id="time" name="time" required />
-            </div>
-            <div class="user-input-box">
-                <label for="comments">Comments:</label>
-                <textarea placeholder="Type your comments here...." id="comments" name="comments" required></textarea>
-            </div>
+      <h1>Visitor Registration Form</h1>
+      <form action="/submit" method="POST" onsubmit="validateForm(event)">
+        <div class="user-input-box">
+          <label for="name">Visitor Name:</label>
+          <input
+            type="text"
+            placeholder="Enter your name (First and Last)"
+            id="name"
+            name="name"
+            required
+            pattern="^[A-Za-z]{2,}\s[A-Za-z]{2,}$"
+            title="Please enter first and last name, each with at least two letters."
+          />
+        </div>
+        <div class="user-input-box">
+          <label for="assistant">Assistant Name:</label>
+          <input
+            type="text"
+            placeholder="Assistant name (First and Last)"
+            id="assistant"
+            name="assistant"
+            required
+            pattern="^[A-Za-z]{2,}\s[A-Za-z]{2,}$"
+            title="Please enter first and last name, each with at least two letters."
+          />
+        </div>
+        <div class="user-input-box">
+          <label for="age">Visitor's Age:</label>
+          <input
+            type="number"
+            placeholder="Enter your age"
+            id="age"
+            name="age"
+            required
+            min="1"
+            step="1"
+            title="Please enter a positive integer."
+          />
+        </div>
+        <div class="user-input-box">
+          <label for="date">Date of Visit:</label>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            required
+            pattern="\d{4}-\d{2}-\d{2}"
+          />
+        </div>
+        <div class="user-input-box">
+          <label for="time">Time of Visit:</label>
+          <input type="time" id="time" name="time" required />
+        </div>
+        <div class="user-input-box">
+          <label for="comments">Comments:</label>
+          <textarea
+            placeholder="Type your comments here...."
+            id="comments"
+            name="comments"
+            required
+          ></textarea>
+        </div>
 
-            <input type="submit" value="Submit" />
-        </form>
+        <input type="submit" value="Submit" />
+      </form>
     </div>
-</body>
-
+  </body>
 </html>
