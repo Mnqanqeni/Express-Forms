@@ -28,7 +28,9 @@ app.post("/submit", async (req, res) => {
       )}&assistant=${encodeURIComponent(assistant)}&age=${age}&date=${date
         .split("-")
         .reverse()
-        .join("-")}&time=${time}&comments=${encodeURIComponent(comments)}`
+        .join("-")}&time=${time}&comments=${encodeURIComponent(
+        comments || "N/A"
+      )}`
     );
   } catch (error) {
     console.error(error);
@@ -46,4 +48,7 @@ app.get("/thank-you", async (req, res) => {
 const expressPort = process.env.EXPRESS_PORT || 5001;
 app.listen(expressPort, () => {
   console.log(`Server is listening on port ${expressPort}.....`);
+  console.log(
+    `Server is running at http://localhost:${expressPort}/new_visitor/`
+  );
 });

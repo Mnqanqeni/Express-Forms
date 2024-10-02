@@ -57,16 +57,6 @@ function validateComments(comment) {
   }
 }
 
-function validateForm(event) {
-  const commentsField = document.getElementById("comments");
-  const commentsValue = commentsField.value;
-  const letterCount = (commentsValue.match(/[A-Za-z]/g) || []).length;
-
-  if (letterCount < 2) {
-    alert("Please enter at least two letters in the comments.");
-    event.preventDefault();
-  }
-}
 module.exports = {
   validateName,
   validateAge,
@@ -74,5 +64,4 @@ module.exports = {
   validateTime,
   validateComments,
   validateId,
-  validateForm,
 };

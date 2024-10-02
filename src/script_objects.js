@@ -21,9 +21,6 @@ const errorMessages = {
 
   idMustBePositive: (id) =>
     `invalid id, it must be a positive integer or zero. Received: ${id}`,
-
-  commentAtLeastTwoCharacters: (comment) =>
-    `invalid comments, it must be at least two characters long. Received: ${comment}`,
 };
 
 module.exports = {

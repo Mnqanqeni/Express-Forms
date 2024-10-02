@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/styles.css" />
     <title>Visitor Form</title>
-    <script>
-      const validateForm = require("../src/script_helper");
-    </script>
   </head>
 
   <body>
     <div class="container">
       <h1>Visitor Registration Form</h1>
-      <form action="/submit" method="POST" onsubmit="validateForm(event)">
+      <form action="/submit" method="POST">
         <div class="user-input-box">
           <label for="name">Visitor Name:</label>
           <input
@@ -68,15 +65,18 @@
         <div class="user-input-box">
           <label for="comments">Comments:</label>
           <textarea
-            placeholder="Type your comments here...."
+            placeholder="Optional"
             id="comments"
             name="comments"
-            required
           ></textarea>
         </div>
 
         <input type="submit" value="Submit" />
       </form>
     </div>
+    <script>
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('date').setAttribute('max', today);
+    </script>
   </body>
 </html>

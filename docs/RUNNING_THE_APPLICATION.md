@@ -4,18 +4,56 @@
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Prerequisites](#prerequisites)
-3. [Installation](#installation)
-4. [Configuration](#configuration)
-5. [Running the Application](#running-the-application)
-6. [Accessing the Application](#accessing-the-application)
-7. [Accessing the Database through Adminer](#accessing-the-database-through-adminer)
-
----
+2. [Instruction (Quick Summary)](#instruction-quick-summary)
+3. [Prerequisites](#prerequisites)
+4. [Installation](#installation)
+5. [Configuration](#configuration)
+6. [Running the Application](#running-the-application)
+7. [Accessing the Application](#accessing-the-application)
+8. [Accessing the Database through Adminer](#accessing-the-database-through-adminer)
 
 ## Introduction
 
 This document provides step-by-step instructions for running the Express forms and templates project. The application allows visitors to add their details to the database.
+
+---
+
+## Instruction (Quick Summary)
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone [repository-url]
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables**:
+   Create a `.env` file with database settings.
+
+4. **Run PostgreSQL and Adminer**:
+
+   ```bash
+   docker-compose up
+   ```
+
+5. **Start the server**:
+
+   ```bash
+   npm start
+   ```
+
+6. **Access the application**:
+   Visit `http://localhost:5001/new_visitor`.
+
+7. **Access the database**:
+   Visit `http://localhost:8080` using PostgreSQL credentials.
+
+---
 
 ## Prerequisites
 
@@ -29,11 +67,11 @@ Before running the application, ensure you have the following installed on your 
 ## Installation
 
 1. **Clone the Repository** (if applicable):
+
    ```bash
    git clone [repository-url]
    cd [repository-name]
    ```
-````
 
 2. **Install Dependencies:** Navigate to the application directory and run the following command:
    ```bash
@@ -102,7 +140,4 @@ When logging in to Adminer, use the following details (assuming you used the pro
 - **Username**: `user`
 - **Password**: `pass`
 - **Database**: `db`
-
-```
-
-```
+````
