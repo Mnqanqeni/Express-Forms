@@ -91,6 +91,7 @@ POSTGRES_DB=db
 POSTGRES_PASSWORD=pass
 POSTGRES_PORT=5432
 EXPRESS_PORT=5001
+SESSION_SECRET=your-secret-code
 ```
 
 ### Database Setup
