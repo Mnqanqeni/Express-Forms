@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const session = require("express-session");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -13,8 +12,8 @@ const app = express();
 
 app.set("view engine", "pug");
 app.set("views", "./views");
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/new_visitor", express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -51,7 +50,11 @@ app.post("/submit", async (req, res) => {
 });
 
 app.get("/thank-you", async (req, res) => {
-  res.status(201).render("index", {
+  if (!req.session.visitorId) {
+    return res.status(400).json({ error: "No visitor data found in session." });
+  }
+
+  res.status(200).render("index", {
     title: "Thank You",
     visitor: {
       id: req.session.visitorId,
