@@ -134,15 +134,6 @@ describe("Database Functionality", () => {
       );
     });
 
-    // fit("should throw an error when comments is not a string", async () => {
-    //   newVisitor.comments = 123;
-    //   await addNewVisitor(newVisitor).catch((error) =>
-    //     expect(error.message).toBe(
-    //       errorMessages.inputMustBeString(newVisitor.comments)
-    //     )
-    //   );
-    // });
-
     it("should throw an error when comments is less than two letters", async () => {
       newVisitor.comments = "A";
       await addNewVisitor(newVisitor).catch((error) =>
