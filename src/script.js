@@ -4,7 +4,6 @@ const {
   validateAge,
   validateDate,
   validateTime,
-  validateComments,
   validateId,
 } = require("./script_helper");
 
@@ -23,7 +22,6 @@ const addNewVisitor = async (visitor) => {
   validateAge(age);
   validateDate(date);
   validateTime(time);
-  validateComments(comments);
 
   const values = [name, age, date, time, assistant, comments];
   await pool.query(queries.addNewVisitor, values);
@@ -62,9 +60,6 @@ const updateVisitor = async (visitorId, columnKey, newValue) => {
       break;
     case "assistant":
       validateName(newValue, "assistant");
-      break;
-    case "comments":
-      validateComments(newValue);
       break;
     default:
       throw new Error("Invalid column key");
